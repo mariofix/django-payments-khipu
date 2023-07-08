@@ -14,10 +14,10 @@ class KhipuProvider(BasicProvider):
         raise RedirectNeeded()
 
     def process_data(self, payment, request):
-        raise JsonResponse("process_data")
+        return JsonResponse("process_data")
 
     def refund(self, payment, amount=None):
-        raise JsonResponse("refund")
+        return JsonResponse("refund")
 
     def capture(self, payment, amount=None):
         raise RedirectNeeded()

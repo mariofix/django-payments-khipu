@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-payments-khipu"
-version = "0.1.0"
+version = "0.1.1"
 description = "Soporte Khipu para Django Payments"
 authors = ["Mario Hernandez <mariofix@proton.me>"]
 license = "MIT"
