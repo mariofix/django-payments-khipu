@@ -6,15 +6,67 @@ authors = ["Mario Hernandez <mariofix@proton.me>"]
 license = "MIT"
 readme = "README.md"
 packages = [{include = "django_payments_khipu"}]
+repository = "https://github.com/mariofix/django-payments-khipu"
+documentation = "https://mariofix.github.io/django-payments-khipu/"
+homepage = "https://www.khipu.com/page/guia-de-implementacion/"
+keywords = [
+    "khipu",
+    "pagos",
+    "django",
+    "payment",
+    "django-payments"
+]
+classifiers=[
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Framework :: Django",
+    "Operating System :: OS Independent"
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
 pykhipu = "^0.1.9"
+django-payments = "^2.0.0"
+
+[tool.poetry.group.dev]
+optional = true
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^3.3.3"
-black = "^23.3.0"
-pytest = "^7.4.0"
+pre-commit = "*"
+black = "*"
+pytest = "*"
+flake8 = "*"
+isort = "*"
+mkdocs = {extras = ["i18n"], version = "*"}
+mkdocs-material = "*"
+mkdocstrings = {extras = ["python"], version = "*"}
+mkdocs-git-authors-plugin = "*"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra"
+testpaths = [
+    "tests",
+]
+python_files =[
+    "test*.py"
+]
+
+[tool.black]
+line-length = 120
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+py_version = 38
 
 [build-system]
 requires = ["poetry-core"]
