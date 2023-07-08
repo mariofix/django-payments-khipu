@@ -1,5 +1,7 @@
 # django-payments-khipu
 
+`Proyecto en desarrollo activo, no listo para produccion`
+
 `django-payments-khipu` es una variante de Django Payments que implementa la
 creación, confirmación y expiración de pagos realizados a través de Khipu. Este
 módulo proporciona integración con la API de Khipu para facilitar el
