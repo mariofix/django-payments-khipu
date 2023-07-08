@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "django-payments-khipu"
+version = "0.1.0"
+description = "Soporte Khipu para Django Payments"
+authors = ["Mario Hernandez <mariofix@proton.me>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "django_payments_khipu"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pykhipu = "^0.1.9"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.3.3"
+black = "^23.3.0"
+pytest = "^7.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
