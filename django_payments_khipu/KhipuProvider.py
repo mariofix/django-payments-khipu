@@ -1,6 +1,6 @@
 from django.http import JsonResponse
-from django_payments import RedirectNeeded
-from django_payments.core import BasicProvider
+from payments import RedirectNeeded
+from payments.core import BasicProvider
 
 
 class KhipuProvider(BasicProvider):

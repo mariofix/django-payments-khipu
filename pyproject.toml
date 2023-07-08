@@ -42,6 +42,7 @@ optional = true
 pre-commit = "*"
 black = "*"
 pytest = "*"
+coverage = "*"
 flake8 = "*"
 isort = "*"
 mkdocs = {extras = ["i18n"], version = "*"}
