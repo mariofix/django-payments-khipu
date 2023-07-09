@@ -52,6 +52,8 @@ mkdocs-git-revision-date-localized-plugin = "^1.2.0"
 mkdocs-git-committers-plugin-2 = "^1.1.2"
 pillow = "^10.0.0"
 cairosvg = "^2.7.0"
+faker = "^18.13.0"
+lxml = "^4.9.3"
 
 
 [tool.pytest.ini_options]

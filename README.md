@@ -57,6 +57,8 @@ PAYMENT_VARIANTS = {
 }
 ```
 
+Puedes ver mas opciones de configuracion [en la documentacion](https://mariofix.github.io/django-payments-khipu/uso/#variables-de-configuracion)
+
 ## Licencia
 
 El código está bajo licencia MIT

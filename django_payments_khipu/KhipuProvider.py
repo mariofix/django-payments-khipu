@@ -15,9 +15,10 @@ class KhipuProvider(BasicProvider):
     receiver_id: str = None
     secret: str = None
     use_notification: str | None = "1.3"
+    bank_id: str | None = None
     _client: Any = None
 
-    def __init__(self, receiver_id: str, secret: str, use_notification: str | None, **kwargs):
+    def __init__(self, receiver_id: str, secret: str, use_notification: str | None, bank_id: str | None, **kwargs):
         """
         Inicializa una instancia de KhipuProvider con el ID de receptor y el secreto de Khipu proporcionados.
 
@@ -25,12 +26,14 @@ class KhipuProvider(BasicProvider):
             receiver_id (str): ID de receptor de Khipu.
             secret (str): Secreto de Khipu.
             use_notification (str | None): Versión de la API de notificaciones a utilizar (opcional).
+            bank_id (str | None): Id de Banco para variante (opcional).
             **kwargs: Argumentos adicionales.
         """
         super().__init__(**kwargs)
         self.receiver_id = receiver_id
         self.secret = secret
         self.use_notification = use_notification
+        self.bank_id = bank_id
         self._client = Client(receiver_id=receiver_id, secret=secret)
 
     def get_form(self, payment, data: dict | None = None) -> Any:
@@ -58,9 +61,13 @@ class KhipuProvider(BasicProvider):
                 datos_para_khipu.update({"notify_url": self.get_notification_url()})
                 datos_para_khipu.update({"notify_api_version": self.use_notification})
 
+            if self.bank_id:
+                datos_para_khipu.update({"bank_id": self.bank_id})
+
             if payment.billing_email:
                 datos_para_khipu.update({"payer_email": payment.billing_email})
 
+            datos_para_khipu.update(**self._extra_data(payment.attrs))
             try:
                 payment = self._client.payments.post(
                     payment.description, payment.currency, int(payment.total), **datos_para_khipu
@@ -92,6 +99,34 @@ class KhipuProvider(BasicProvider):
 
         """
         return JsonResponse("process_data")
+
+    def _extra_data(self, attrs) -> dict:
+        if "datos_extra" not in attrs:
+            return {}
+
+        data = attrs.datos_extra
+        if "payer_email" in data:
+            del data["payer_email"]
+
+        if "subject" in data:
+            del data["subject"]
+
+        if "currency" in data:
+            del data["currency"]
+
+        if "amount" in data:
+            del data["amount"]
+
+        if "transaction_id" in data:
+            del data["transaction_id"]
+
+        if "notify_url" in data:
+            del data["notify_url"]
+
+        if "notify_api_version" in data:
+            del data["notify_api_version"]
+
+        return data
 
     def refund(self, payment, amount: int | None = None) -> int:
         """

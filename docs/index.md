@@ -22,17 +22,16 @@ Características principales:
 
 ## Instalación
 
-Puedes instalar django-payments-khipu utilizando pip:
+Puedes instalar django-payments-khipu con:
 
-```shell
-pip install django-payments-khipu
-```
-
-O utilizando poetry:
-
-```shell
-poetry add django-payments-khipu
-```
+=== "usando pip"
+    ```shell
+    pip install django-payments-khipu
+    ```
+=== "usando poetry"
+    ```shell
+    poetry add django-payments-khipu
+    ```
 
 ## Configuración
 
