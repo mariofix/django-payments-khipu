@@ -1,0 +1,53 @@
+name: Tests & Release & Build Docs
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+        poetry-version: ["1.5.0"]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Set Up Poetry
+      uses: abatilo/actions-poetry@v2
+      with:
+        poetry-version: ${{ matrix.poetry-version }}
+    - name: Install django-payments-khipu
+      run: poetry install --with dev
+    - name: Run Tests
+      run: poetry run pytest
+
+  docs:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+        poetry-version: ["1.5.0"]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    needs: tests
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Set Up Poetry
+      uses: abatilo/actions-poetry@v2
+      with:
+        poetry-version: ${{ matrix.poetry-version }}
+    - name: Install django-payments-khipu
+      run: poetry install --with dev
+    - name: Publish Docs
+      run: poetry run mkdocs gh-deploy

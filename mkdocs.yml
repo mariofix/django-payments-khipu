@@ -1,0 +1,72 @@
+site_name: Khipu para Django Payments
+repo_url: https://github.com/mariofix/django-payments-khipu
+repo_name: django-payments-khipu
+
+theme:  
+  name: material
+  palette:
+    scheme: slate
+    primary: deep purple
+    accent: teal
+  font:
+    text: Roboto
+  language: es
+  icon:
+    logo: material/alpha-k-box-outline
+    repo: fontawesome/brands/github
+  features:
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - toc.follow
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - search.share
+
+plugins:
+  - git-committers:
+      repository: mariofix/django-payments-khipu
+      branch: main
+      enabled: true
+
+
+
+plugins:
+  - mkdocstrings
+  - search
+
+nav:
+  - index.md
+  - instalacion.md
+  - api.md
+
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - tables
+  - pymdownx.betterem
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences 
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji 
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.smartsymbols
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true

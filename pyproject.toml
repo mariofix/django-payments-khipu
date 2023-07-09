@@ -31,7 +31,7 @@ classifiers=[
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
 pykhipu = "^0.1.9"
 django-payments = "^2.0.0"
 
@@ -39,16 +39,20 @@ django-payments = "^2.0.0"
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "*"
-black = "*"
-pytest = "*"
-coverage = "*"
-flake8 = "*"
-isort = "*"
-mkdocs = {extras = ["i18n"], version = "*"}
-mkdocs-material = "*"
-mkdocstrings = {extras = ["python"], version = "*"}
-mkdocs-git-authors-plugin = "*"
+pre-commit = "^3.3.3"
+black = "^23.3.0"
+isort = "^5.12.0"
+coverage = "^7.2.7"
+pytest = "^7.4.0"
+flake8 = "^6.0.0"
+mkdocs = "^1.4.3"
+mkdocs-material = "^9.1.18"
+mkdocstrings = {extras = ["python"], version = "^0.22.0"}
+mkdocs-git-revision-date-localized-plugin = "^1.2.0"
+mkdocs-git-committers-plugin-2 = "^1.1.2"
+pillow = "^10.0.0"
+cairosvg = "^2.7.0"
+
 
 [tool.pytest.ini_options]
 minversion = "6.0"
