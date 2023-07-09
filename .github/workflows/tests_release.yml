@@ -1,4 +1,4 @@
-name: Tests & Release & Build Docs
+name: Release & Build Docs
 
 on:
   release:
@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  tests:
+  crosscheck:
     strategy:
       fail-fast: false
       matrix:
@@ -39,7 +39,7 @@ jobs:
         poetry-version: ["1.5.0"]
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
-    needs: tests
+    needs: crosscheck
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -54,3 +54,31 @@ jobs:
       run: poetry install --with dev
     - name: Deploy Docs
       run: poetry run mkdocs gh-deploy --force
+
+  pypi-publish:
+    name: Build and Upload
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+        poetry-version: ["1.5.0"]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    needs: crosscheck
+    environment:
+      name: pypi
+      url: https://pypi.org/p/django-payments-khipu
+    permissions:
+      id-token: write
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+    - name: Set Up Poetry
+      uses: abatilo/actions-poetry@v2
+    - name: Install django-payments-khipu
+      run: poetry install --with dev
+    - name: Build django-payments-khipu
+      run: poetry build
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
