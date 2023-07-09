@@ -50,14 +50,7 @@ jobs:
       uses: abatilo/actions-poetry@v2
       with:
         poetry-version: ${{ matrix.poetry-version }}
-    - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV 
-      - uses: actions/cache@v3
-        with:
-          key: mkdocs-material-${{ env.cache_id }}
-          path: .cache
-          restore-keys: |
-            mkdocs-material-
     - name: Install django-payments-khipu
       run: poetry install --with dev
-    - name: Publish Docs
-      run: poetry run mkdocs gh-deploy --force --clean --verbose
+    - name: Deploy Docs
+      run: poetry run mkdocs gh-deploy --force
