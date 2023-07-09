@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-payments-khipu"
-version = "0.1.1"
+version = "0.1.2"
 description = "Soporte Khipu para Django Payments"
 authors = ["Mario Hernandez <mariofix@proton.me>"]
 license = "MIT"
@@ -55,6 +55,7 @@ cairosvg = "^2.7.0"
 
 
 [tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.django_settings"
 minversion = "6.0"
 addopts = "-ra"
 testpaths = [

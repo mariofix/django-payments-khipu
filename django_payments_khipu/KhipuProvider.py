@@ -1,46 +1,83 @@
+from typing import Any
+
 from django.http import JsonResponse
-from payments import RedirectNeeded
+from payments import PaymentError, PaymentStatus, RedirectNeeded
+from payments.core import BasicProvider
+from pykhipu.client import Client
+from pykhipu.errors import AuthorizationError, ServiceError, ValidationError
 
-# from payments.core import BasicProvider
 
-
-class KhipuProvider:
+class KhipuProvider(BasicProvider):
     """
-    La clase KhipuProvider proporciona integración con Khipu para procesar
-    pagos.
+    KhipuProvider es una clase que proporciona integración con Khipu para procesar pagos.
     """
 
     receiver_id: str = None
     secret: str = None
+    use_notification: str | None = "1.3"
+    _client: Any = None
 
-    def __init__(self, receiver_id, secret, **kwargs):
+    def __init__(self, receiver_id: str, secret: str, use_notification: str | None, **kwargs):
         """
-        Inicializa una instancia de KhipuProvider con la clave API y el secreto
-        API de Khipu proporcionados.
+        Inicializa una instancia de KhipuProvider con el ID de receptor y el secreto de Khipu proporcionados.
 
         Args:
-            receiver_id (str): Clave API de Khipu.
-            secret (str): Secreto API de Khipu.
+            receiver_id (str): ID de receptor de Khipu.
+            secret (str): Secreto de Khipu.
+            use_notification (str | None): Versión de la API de notificaciones a utilizar (opcional).
+            **kwargs: Argumentos adicionales.
         """
         super().__init__(**kwargs)
         self.receiver_id = receiver_id
         self.secret = secret
+        self.use_notification = use_notification
+        self._client = Client(receiver_id=receiver_id, secret=secret)
 
-    def get_form(self, payment, data=None):
+    def get_form(self, payment, data: dict | None = None) -> Any:
         """
         Genera el formulario de pago para redirigir a la página de pago de Khipu.
 
         Args:
             payment: Objeto de pago.
-            data: Datos del formulario (no utilizado).
+            data (dict | None): Datos del formulario (opcional).
+
+        Returns:
+            Any: Formulario de pago redirigido a la página de pago de Khipu.
 
         Raises:
             RedirectNeeded: Redirige a la página de pago de Khipu.
 
         """
         if not payment.transaction_id:
-            pass
-        raise RedirectNeeded()
+            datos_para_khipu = {
+                "transaction_id": payment.token,
+                "return_url": payment.get_success_url(),
+                "cancel_url": payment.get_failure_url(),
+            }
+            if self.use_notification:
+                datos_para_khipu.update({"notify_url": self.get_notification_url()})
+                datos_para_khipu.update({"notify_api_version": self.use_notification})
+
+            if payment.billing_email:
+                datos_para_khipu.update({"payer_email": payment.billing_email})
+
+            try:
+                payment = self._client.payments.post(
+                    payment.description, payment.currency, int(payment.total), **datos_para_khipu
+                )
+
+            except (ValidationError, AuthorizationError, ServiceError) as pe:
+                payment.change_status(PaymentStatus.ERROR, str(pe))
+                raise PaymentError(pe)
+            else:
+                payment.transaction_id = payment.payment_id
+                payment.attrs.payment_response = payment
+                payment.save()
+
+        if "payment_url" not in payment:
+            raise PaymentError("Khipu no envió una URL, revisa los logs en Khipu.")
+
+        raise RedirectNeeded(payment.get("payment_url"))
 
     def process_data(self, payment, request) -> JsonResponse:
         """
@@ -56,31 +93,48 @@ class KhipuProvider:
         """
         return JsonResponse("process_data")
 
-    def refund(self, payment, amount=None) -> JsonResponse:
+    def refund(self, payment, amount: int | None = None) -> int:
         """
-        Realiza el reembolso del pago.
+        Realiza un reembolso del pago.
 
         Args:
             payment: Objeto de pago.
-            amount: Monto a reembolsar (no utilizado).
+            amount (int | None): Monto a reembolsar (opcional).
 
         Returns:
-            JsonResponse: Respuesta JSON que indica el proceso de reembolso.
+            int: Monto reembolsado.
+
+        Raises:
+            PaymentError: Error al realizar el reembolso.
 
         """
-        return JsonResponse("refund")
+        if payment.status != PaymentStatus.CONFIRMED:
+            raise PaymentError("El pago debe estar confirmado para reversarse.")
+
+        to_refund = amount or payment.total
+        try:
+            refund = self._client.payments.post_refunds(payment.transaction_id, to_refund)
+        except (ValidationError, AuthorizationError, ServiceError) as pe:
+            raise PaymentError(pe)
+        else:
+            payment.attrs.refund = refund
+            payment.save()
+            payment.change_status(PaymentStatus.REFUNDED)
+            return to_refund
 
     def capture(self, payment, amount=None):
         """
-        Captura el pago (no implementado).
+        Captura el monto del pago.
 
         Args:
             payment: Objeto de pago.
+            amount: Monto a capturar (no utilizado).
 
         Raises:
             NotImplementedError: Método no implementado.
+
         """
-        raise RedirectNeeded()
+        raise NotImplementedError()
 
     def release(self, payment):
         """
@@ -91,5 +145,6 @@ class KhipuProvider:
 
         Raises:
             NotImplementedError: Método no implementado.
+
         """
         raise NotImplementedError()

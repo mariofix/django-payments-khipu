@@ -2,7 +2,7 @@ site_name: Khipu para Django Payments
 repo_url: https://github.com/mariofix/django-payments-khipu
 repo_name: django-payments-khipu
 
-theme:  
+theme:
   name: material
   palette:
     scheme: slate
@@ -29,10 +29,6 @@ plugins:
       repository: mariofix/django-payments-khipu
       branch: main
       enabled: true
-
-
-
-plugins:
   - mkdocstrings
   - search
 
@@ -59,10 +55,7 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.highlight:
       anchor_linenums: true
-  - pymdownx.superfences 
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji 
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.superfences
   - pymdownx.highlight
   - pymdownx.inlinehilite
   - pymdownx.smartsymbols
