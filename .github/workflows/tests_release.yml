@@ -51,7 +51,7 @@ jobs:
       with:
         poetry-version: ${{ matrix.poetry-version }}
     - name: Install django-payments-khipu
-      run: poetry install --with dev
+      run: poetry install --with docs,dev
     - name: Deploy Docs
       run: poetry run mkdocs gh-deploy --force
 
