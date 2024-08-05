@@ -12,7 +12,7 @@ def mollie_payment():
     currency = fake.currency_code()
     amount = fake.pydecimal(right_digits=2, min_value=1, max_value=999)
     description = fake.sentence()
-    checkout_url = f"https://khipu.test/checkout/{fake.password(length=10,special_chars=False)}/"
+    checkout_url = f"https://khipu.test/checkout/{fake.password(length=10, special_chars=False)}/"
 
     data = {
         "id": transaction_id,
