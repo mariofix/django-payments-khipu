@@ -1,86 +1,75 @@
 [tool.poetry]
 name = "django-payments-khipu"
-version = "0.1.3"
+version = "2024.9.23"
 description = "Soporte Khipu para Django Payments"
 authors = ["Mario Hernandez <mariofix@proton.me>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "django_payments_khipu"}]
+packages = [{ include = "django_payments_khipu" }]
 repository = "https://github.com/mariofix/django-payments-khipu"
 documentation = "https://mariofix.github.io/django-payments-khipu/"
 homepage = "https://www.khipu.com/page/guia-de-implementacion/"
-keywords = [
-    "khipu",
-    "pagos",
-    "django",
-    "payment",
-    "django-payments"
-]
-classifiers=[
-    "Development Status :: 2 - Pre-Alpha",
+keywords = ["khipu", "pagos", "django", "payment", "django-payments", "pago"]
+classifiers = [
+    "Development Status :: 4 - Beta",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Framework :: Django",
-    "Operating System :: OS Independent"
+    "Operating System :: OS Independent",
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
-pykhipu = "0.1.9"
-django-payments = "2.0.0"
+python = "^3.9"
+pykhipu = "<=0.1.9"
+django-payments = ">=2.0.0, <=3.1"
 
 [tool.poetry.group.dev]
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^3.3.3"
-black = "^23.3.0"
-isort = "^5.12.0"
-coverage = "^7.2.7"
-pytest = "^7.4.0"
-faker = "^18.13.0"
+pre-commit = "^3.8.0"
+black = "^24.8.0"
+isort = "^5.13.2"
+coverage = "^7.6.1"
+pytest = "^8.3.3"
+faker = "^29.0.0"
 
 [tool.poetry.group.docs]
 optional = true
 
 
 [tool.poetry.group.docs.dependencies]
-mkdocs = "^1.4.3"
-mkdocs-material = "^9.1.18"
-mkdocstrings = {extras = ["python"], version = "^0.22.0"}
-mkdocs-git-revision-date-localized-plugin = "^1.2.0"
-mkdocs-git-committers-plugin-2 = "^1.1.2"
+# mkdocs = "^1.4.3"
+# mkdocs-material = "^9.1.18"
+# mkdocstrings = { extras = ["python"], version = "^0.22.0" }
+# mkdocs-git-revision-date-localized-plugin = "^1.2.0"
+# mkdocs-git-committers-plugin-2 = "^1.1.2"
 pillow = "^10.0.0"
 cairosvg = "^2.7.0"
 lxml = "^4.9.3"
-
 
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.django_settings"
 minversion = "6.0"
 addopts = "-ra"
-testpaths = [
-    "tests",
-]
-python_files =[
-    "test*.py"
-]
+testpaths = ["tests"]
+python_files = ["test*.py"]
 
 [tool.black]
-line-length = 120
-target-version = ['py38']
+line-length = 119
+target-version = ['py39']
 
 [tool.isort]
 profile = "black"
 multi_line_output = 3
-py_version = 38
+py_version = 39
 
 [build-system]
 requires = ["poetry-core"]

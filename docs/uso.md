@@ -53,6 +53,7 @@ modelo de Pagos.
 
 Por ejemplo, si deseas enviar el nombre del cliente en cada compra, puedes
 utilizar el siguiente código:
+
 ```python
 datos_extra: dict = {
     "payer_name": "Nombre de Cliente",

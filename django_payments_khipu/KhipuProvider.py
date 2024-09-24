@@ -18,7 +18,14 @@ class KhipuProvider(BasicProvider):
     bank_id: str | None = None
     _client: Any = None
 
-    def __init__(self, receiver_id: str, secret: str, use_notification: str | None, bank_id: str | None, **kwargs):
+    def __init__(
+        self,
+        receiver_id: str,
+        secret: str,
+        use_notification: str | None,
+        bank_id: str | None,
+        **kwargs,
+    ):
         """
         Inicializa una instancia de KhipuProvider con el ID de receptor y el secreto de Khipu proporcionados.
 
@@ -70,7 +77,10 @@ class KhipuProvider(BasicProvider):
             datos_para_khipu.update(**self._extra_data(payment.attrs))
             try:
                 payment = self._client.payments.post(
-                    payment.description, payment.currency, int(payment.total), **datos_para_khipu
+                    payment.description,
+                    payment.currency,
+                    int(payment.total),
+                    **datos_para_khipu,
                 )
 
             except (ValidationError, AuthorizationError, ServiceError) as pe:
